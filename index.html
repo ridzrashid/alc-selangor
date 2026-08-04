@@ -575,30 +575,30 @@
 
   </main>
 
-  <!-- JAVASCRIPT VANILLA -->
+<!-- JAVASCRIPT VANILLA DENGAN SOKONGAN LOCALSTORAGE -->
   <script>
     // ==========================================
-    // DATA APPLIKASI (STATE)
+    // 1. DATA APPLIKASI (DIAMBIL DARI LOCALSTORAGE)
     // ==========================================
-    let programs = [
+    let programs = JSON.parse(localStorage.getItem('alc_programs')) || [
       {
         id: 1,
         title: "Bengkel Creative Learning dengan iPad",
         time: "12 Ogos 2026, 9:00 AM",
-        img: "https://images.unsplash.com/photo-1542744094-3a31b272c490?auto=format&fit=crop&w=600&q=80"
+        img: "https://picsum.photos/id/0/600/400"
       }
     ];
 
-    let oprs = [
+    let oprs = JSON.parse(localStorage.getItem('alc_oprs')) || [
       {
         id: 1,
         title: "OPR: Bengkel Pengaturcaraan Swift",
         time: "20 Julai 2026",
-        img: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=600&q=80"
+        img: "https://picsum.photos/id/1/600/400"
       }
     ];
 
-    let guests = [
+    let guests = JSON.parse(localStorage.getItem('alc_guests')) || [
       {
         name: "Ahmad Zaki",
         school: "SK Seksyen 7 Shah Alam",
@@ -608,36 +608,28 @@
     ];
 
     // ==========================================
-    // SISTEM TAB & NAVIGASI
+    // 2. SISTEM TAB & NAVIGASI
     // ==========================================
     function switchTab(tabId) {
-      // Sembunyikan semua seksyen
       const tabs = document.querySelectorAll('.tab-content');
       tabs.forEach(tab => tab.classList.remove('active'));
 
-      // Nyahaktifkan semua butang navigasi
       const btns = document.querySelectorAll('.nav-btn');
       btns.forEach(btn => btn.classList.remove('active'));
 
-      // Tunjukkan tab dipilihs
       document.getElementById(tabId).classList.add('active');
 
-      // Aktifkan butang berkenaan
       const activeBtn = Array.from(btns).find(btn => btn.getAttribute('onclick').includes(tabId));
       if (activeBtn) activeBtn.classList.add('active');
 
-      // Tutup menu mobile jika terbuka
       document.getElementById('navbar').classList.remove('open');
     }
 
-    // Mobile Menu Toggle
     document.getElementById('menuToggle').addEventListener('click', () => {
       document.getElementById('navbar').classList.toggle('open');
     });
 
-    // ==========================================
-    // PEMBACA GAMBAR (FILE READER HELPER)
-    // ==========================================
+    // Helper: Pembaca Gambar (Base64)
     function readFileAsDataURL(file) {
       return new Promise((resolve, reject) => {
         const reader = new FileReader();
@@ -648,7 +640,7 @@
     }
 
     // ==========================================
-    // 1. DASHBOARD LOGIK
+    // 3. DASHBOARD LOGIK
     // ==========================================
     function updateDashboard() {
       document.getElementById('statProgramCount').innerText = programs.length;
@@ -671,7 +663,7 @@
     }
 
     // ==========================================
-    // 2. SENARAI PROGRAM LOGIK
+    // 4. LOGIK PROGRAM (DENGAN LOCALSTORAGE)
     // ==========================================
     async function addProgram(e) {
       e.preventDefault();
@@ -679,17 +671,20 @@
       const time = document.getElementById('progTime').value;
       const imgFile = document.getElementById('progImg').files[0];
 
-      let imgUrl = 'https://via.placeholder.com/300?text=Program';
+      let imgUrl = 'https://picsum.photos/id/0/600/400';
       if (imgFile) {
         imgUrl = await readFileAsDataURL(imgFile);
       }
 
       programs.unshift({ id: Date.now(), title, time, img: imgUrl });
-      document.getElementById('formProgram').reset();
       
+      // Simpan ke LocalStorage
+      localStorage.setItem('alc_programs', JSON.stringify(programs));
+
+      document.getElementById('formProgram').reset();
       renderPrograms();
       updateDashboard();
-      alert('Program berjaya ditambah!');
+      alert('Program berjaya ditambah dan disimpan!');
     }
 
     function renderPrograms() {
@@ -704,7 +699,7 @@
     }
 
     // ==========================================
-    // 3. SENARAI OPR LOGIK
+    // 5. LOGIK OPR (DENGAN LOCALSTORAGE)
     // ==========================================
     async function addOpr(e) {
       e.preventDefault();
@@ -712,17 +707,20 @@
       const time = document.getElementById('oprTime').value;
       const imgFile = document.getElementById('oprImg').files[0];
 
-      let imgUrl = 'https://via.placeholder.com/300?text=OPR';
+      let imgUrl = 'https://picsum.photos/id/1/600/400';
       if (imgFile) {
         imgUrl = await readFileAsDataURL(imgFile);
       }
 
       oprs.unshift({ id: Date.now(), title, time, img: imgUrl });
+
+      // Simpan ke LocalStorage
+      localStorage.setItem('alc_oprs', JSON.stringify(oprs));
+
       document.getElementById('formOpr').reset();
-      
       renderOpr();
       updateDashboard();
-      alert('Laporan OPR berjaya dimuat naik!');
+      alert('Laporan OPR berjaya dimuat naik dan disimpan!');
     }
 
     function renderOpr() {
@@ -737,7 +735,7 @@
     }
 
     // ==========================================
-    // 4. PROFIL PENGGUNA (MAKLUMAT KORPORAT)
+    // 6. LOGIK PROFIL (DENGAN LOCALSTORAGE)
     // ==========================================
     async function updateProfile(e) {
       e.preventDefault();
@@ -746,20 +744,37 @@
       const sekolah = document.getElementById('profSekolah').value;
       const imgFile = document.getElementById('profGambar').files[0];
 
-      document.getElementById('cardNama').innerText = nama;
-      document.getElementById('cardJawatan').innerText = jawatan;
-      document.getElementById('cardSekolah').innerText = sekolah;
-
+      let imgUrl = document.getElementById('cardImg').src;
       if (imgFile) {
-        const imgUrl = await readFileAsDataURL(imgFile);
-        document.getElementById('cardImg').src = imgUrl;
+        imgUrl = await readFileAsDataURL(imgFile);
       }
 
-      alert('Profil pengguna berjaya dijana dalam bahagian Korporat!');
+      const profileObj = { nama, jawatan, sekolah, img: imgUrl };
+
+      // Simpan ke LocalStorage
+      localStorage.setItem('alc_profile', JSON.stringify(profileObj));
+
+      // Paparkan pada kad
+      renderProfile(profileObj);
+      alert('Profil pengguna berjaya dikemaskini dan disimpan!');
+    }
+
+    function loadProfile() {
+      const savedProfile = JSON.parse(localStorage.getItem('alc_profile'));
+      if (savedProfile) {
+        renderProfile(savedProfile);
+      }
+    }
+
+    function renderProfile(profile) {
+      if (profile.nama) document.getElementById('cardNama').innerText = profile.nama;
+      if (profile.jawatan) document.getElementById('cardJawatan').innerText = profile.jawatan;
+      if (profile.sekolah) document.getElementById('cardSekolah').innerText = profile.sekolah;
+      if (profile.img) document.getElementById('cardImg').src = profile.img;
     }
 
     // ==========================================
-    // 5. BUKU PELAWAT LOGIK
+    // 7. LOGIK BUKU PELAWAT (DENGAN LOCALSTORAGE)
     // ==========================================
     function addGuestbook(e) {
       e.preventDefault();
@@ -769,8 +784,11 @@
       const date = new Date().toLocaleDateString('ms-MY', { day: 'numeric', month: 'long', year: 'numeric' });
 
       guests.unshift({ name, school, message, date });
-      document.getElementById('formGuestbook').reset();
 
+      // Simpan ke LocalStorage
+      localStorage.setItem('alc_guests', JSON.stringify(guests));
+
+      document.getElementById('formGuestbook').reset();
       renderGuestbook();
       updateDashboard();
       alert('Terima kasih! Catatan anda telah disimpan.');
@@ -791,6 +809,7 @@
     // INITIALIZATION (PELAKSANAAN AWAL)
     // ==========================================
     window.onload = function() {
+      loadProfile();
       renderPrograms();
       renderOpr();
       renderGuestbook();
