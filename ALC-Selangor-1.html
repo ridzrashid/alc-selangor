@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="ms">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Apple Learning Center Selangor</title>
+  <style>
+    /* ==========================================
+       1. ASAS & PEMBOLEHUBAH REKA BENTUK (APPLE STYLE)
+       ========================================== */
+    :root {
+      --bg-color: #f5f5f7;
+      --card-bg: #ffffff;
+      --text-main: #1d1d1f;
+      --text-muted: #86868b;
+      --primary: #0071e3;
+      --primary-hover: #0077ed;
+      --accent: #34c759;
+      --border-color: #e5e5ea;
+      --shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      --radius: 16px;
+      --transition: all 0.3s ease;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    /* ==========================================
+       2. REKA BENTUK SUSUN ATUR (LAYOUT) & HEADER
+       ========================================== */
+    header {
+      background: rgba(255, 255, 255, 0.8);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      border-bottom: 1px solid var(--border-color);
+      padding: 1rem 1.5rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--text-main);
+    }
+
+    .brand span {
+      color: var(--primary);
+    }
+
+    /* Navigation */
+    nav {
+      display: flex;
+      gap: 8px;
+    }
+
+    .nav-btn {
+      background: transparent;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 20px;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .nav-btn:hover {
+      color: var(--primary);
+      background: rgba(0, 113, 227, 0.05);
+    }
+
+    .nav-btn.active {
+      background: var(--primary);
+      color: #fff;
+    }
+
+    /* Mobile Nav Toggle */
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: none;
+      font-size: 1.5rem;
+      cursor: pointer;
+      color: var(--text-main);
+    }
+
+    main {
+      flex: 1;
+      max-width: 1200px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 2rem 1.5rem;
+    }
+
+    /* Tab Sections */
+    .tab-content {
+      display: none;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ==========================================
+       3. KOMPONEN UMUM (CARDS, FORMS, BUTTONS)
+       ========================================== */
+    .section-title {
+      font-size: 1.8rem;
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+    }
+
+    .section-desc {
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+      font-size: 0.95rem;
+    }
+
+    .grid-layout {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.5rem;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border-color);
+      transition: var(--transition);
+    }
+
+    .card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Forms */
+    .form-container {
+      background: var(--card-bg);
+      padding: 1.5rem;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border-color);
+      margin-bottom: 2rem;
+    }
+
+    .form-group {
+      margin-bottom: 1rem;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+      color: var(--text-main);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 10px 14px;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      font-size: 0.95rem;
+      outline: none;
+      background: #fafafa;
+      transition: var(--transition);
+    }
+
+    .form-control:focus {
+      border-color: var(--primary);
+      background: #fff;
+    }
+
+    textarea.form-control {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    .btn {
+      background: var(--primary);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 10px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      display: inline-block;
+    }
+
+    .btn:hover {
+      background: var(--primary-hover);
+    }
+
+    /* Media/Image Container */
+    .card-img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 1rem;
+      background: #eee;
+    }
+
+    /* ==========================================
+       4. SEKSYEN KHUSUS
+       ========================================== */
+    /* Dashboard Hero */
+    .hero {
+      background: linear-gradient(135deg, #0071e3 0%, #42a5f5 100%);
+      color: white;
+      padding: 2.5rem 2rem;
+      border-radius: var(--radius);
+      margin-bottom: 2rem;
+    }
+
+    .hero h1 { font-size: 2.2rem; margin-bottom: 0.5rem; }
+    .hero p { opacity: 0.9; font-size: 1.1rem; }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-bottom: 2rem;
+    }
+
+    .stat-card {
+      background: white;
+      padding: 1.2rem;
+      border-radius: var(--radius);
+      text-align: center;
+      box-shadow: var(--shadow);
+    }
+
+    .stat-card .num {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--primary);
+    }
+
+    /* Profile Card (Maklumat Korporat) */
+    .profile-card {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 2rem;
+      background: white;
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border-color);
+      margin-top: 1.5rem;
+    }
+
+    .profile-avatar {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      object-fit: cover;
+      margin-bottom: 1rem;
+      border: 4px solid var(--primary);
+    }
+
+    .profile-name { font-size: 1.4rem; font-weight: 700; }
+    .profile-role { color: var(--primary); font-weight: 600; margin-bottom: 0.2rem; }
+    .profile-school { color: var(--text-muted); font-size: 0.95rem; }
+
+    /* Media Sosial Icons Grid */
+    .social-links {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1rem;
+    }
+
+    .social-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 12px;
+      background: white;
+      border-radius: 12px;
+      text-decoration: none;
+      color: var(--text-main);
+      font-weight: 600;
+      box-shadow: var(--shadow);
+      border: 1px solid var(--border-color);
+      transition: var(--transition);
+    }
+
+    .social-btn:hover {
+      transform: translateY(-2px);
+      background: #fafafa;
+    }
+
+    /* Buku Pelawat List */
+    .guestbook-item {
+      background: white;
+      padding: 1rem;
+      border-radius: 12px;
+      border-left: 4px solid var(--primary);
+      margin-bottom: 1rem;
+      box-shadow: var(--shadow);
+    }
+
+    .guestbook-meta {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-top: 0.5rem;
+    }
+
+    /* ==========================================
+       5. REKA BENTUK RESPONSIF (MOBILE & TABLET)
+       ========================================== */
+    @media (max-width: 768px) {
+      .menu-toggle { display: block; }
+
+      nav {
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(255, 255, 255, 0.98);
+        flex-direction: column;
+        padding: 1rem;
+        box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        border-bottom: 1px solid var(--border-color);
+      }
+
+      nav.open { display: flex; }
+
+      .nav-btn {
+        width: 100%;
+        text-align: left;
+        padding: 12px 16px;
+      }
+
+      .hero h1 { font-size: 1.6rem; }
+      .hero p { font-size: 0.95rem; }
+      
+      main { padding: 1rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HEADER & NAVIGASI -->
+  <header>
+    <div class="brand">
+       <span>ALC Selangor</span>
+    </div>
+    <button class="menu-toggle" id="menuToggle" aria-label="Menu">☰</button>
+    <nav id="navbar">
+      <button class="nav-btn active" onclick="switchTab('dashboard')">Dashboard</button>
+      <button class="nav-btn" onclick="switchTab('program')">Program</button>
+      <button class="nav-btn" onclick="switchTab('opr')">Senarai OPR</button>
+      <button class="nav-btn" onclick="switchTab('korporat')">Korporat & Profil</button>
+      <button class="nav-btn" onclick="switchTab('medsos')">Media Sosial</button>
+      <button class="nav-btn" onclick="switchTab('pelawat')">Buku Pelawat</button>
+    </nav>
+  </header>
+
+  <!-- KANDUNGAN UTAMA -->
+  <main>
+
+    <!-- 1. DASHBOARD UTAMA -->
+    <section id="dashboard" class="tab-content active">
+      <div class="hero">
+        <h1>Selamat Datang ke Apple Learning Center Selangor</h1>
+        <p>Pusat Kecemerlangan Digital & Inovasi Pendidikan Selangor</p>
+      </div>
+
+      <div class="stat-grid">
+        <div class="stat-card">
+          <div class="num" id="statProgramCount">0</div>
+          <div>Program Berlangsung</div>
+        </div>
+        <div class="stat-card">
+          <div class="num" id="statOprCount">0</div>
+          <div>Laporan OPR</div>
+        </div>
+        <div class="stat-card">
+          <div class="num" id="statGuestCount">0</div>
+          <div>Pelawat Mendaftar</div>
+        </div>
+      </div>
+
+      <h2 class="section-title">Program Terkini</h2>
+      <p class="section-desc">Aktiviti dan bengkel pembelajaran terkini di Selangor.</p>
+      <div id="dashboardProgramList" class="grid-layout">
+        <!-- Program terkini disuntik secara dinamik -->
+      </div>
+    </section>
+
+    <!-- 2. SENARAI PROGRAM -->
+    <section id="program" class="tab-content">
+      <h2 class="section-title">Pengurusan Program</h2>
+      <p class="section-desc">Tambah dan lihat senarai program Apple Learning Center Selangor.</p>
+
+      <div class="form-container">
+        <h3>Tambah Program Baharu</h3>
+        <br>
+        <form id="formProgram" onsubmit="addProgram(event)">
+          <div class="form-group">
+            <label for="progTitle">Nama Program</label>
+            <input type="text" id="progTitle" class="form-control" placeholder="Contoh: Bengkel Swift Playgrounds" required>
+          </div>
+          <div class="form-group">
+            <label for="progTime">Masa & Tarikh</label>
+            <input type="text" id="progTime" class="form-control" placeholder="Contoh: 10 Ogos 2026, 9:00 Pagi" required>
+          </div>
+          <div class="form-group">
+            <label for="progImg">Muat Naik Gambar Program</label>
+            <input type="file" id="progImg" class="form-control" accept="image/*" required>
+          </div>
+          <button type="submit" class="btn">Simpan Program</button>
+        </form>
+      </div>
+
+      <h3 style="margin-bottom: 1rem;">Senarai Program</h3>
+      <div id="programList" class="grid-layout"></div>
+    </section>
+
+    <!-- 3. SENARAI OPR (ONE PAGE REPORT) -->
+    <section id="opr" class="tab-content">
+      <h2 class="section-title">Laporan OPR (One Page Report)</h2>
+      <p class="section-desc">Dokumentasi dan ringkasan pelaksanaan aktiviti.</p>
+
+      <div class="form-container">
+        <h3>Tambah OPR Baharu</h3>
+        <br>
+        <form id="formOpr" onsubmit="addOpr(event)">
+          <div class="form-group">
+            <label for="oprTitle">Tajuk Program / OPR</label>
+            <input type="text" id="oprTitle" class="form-control" placeholder="Contoh: Laporan iPad in Education" required>
+          </div>
+          <div class="form-group">
+            <label for="oprTime">Masa / Tarikh Pelaksanaan</label>
+            <input type="text" id="oprTime" class="form-control" placeholder="Contoh: 15 Julai 2026" required>
+          </div>
+          <div class="form-group">
+            <label for="oprImg">Muat Naik Gambar OPR</label>
+            <input type="file" id="oprImg" class="form-control" accept="image/*" required>
+          </div>
+          <button type="submit" class="btn">Muat Naik OPR</button>
+        </form>
+      </div>
+
+      <h3 style="margin-bottom: 1rem;">Senarai OPR Terkini</h3>
+      <div id="oprList" class="grid-layout"></div>
+    </section>
+
+    <!-- 4. MAKLUMAT KORPORAT & PROFIL PENGGUNA -->
+    <section id="korporat" class="tab-content">
+      <h2 class="section-title">Maklumat Korporat & Profil</h2>
+      <p class="section-desc">Pengurusan maklumat pegawa/pengguna dan profil korporat ALC Selangor.</p>
+
+      <!-- Form Kemaskini Profil -->
+      <div class="form-container">
+        <h3>Kemaskini Butiran Pengguna</h3>
+        <br>
+        <form id="formProfil" onsubmit="updateProfile(event)">
+          <div class="form-group">
+            <label for="profNama">Nama Penuh</label>
+            <input type="text" id="profNama" class="form-control" placeholder="Masukkan nama penuh" required>
+          </div>
+          <div class="form-group">
+            <label for="profJawatan">Jawatan</label>
+            <input type="text" id="profJawatan" class="form-control" placeholder="Contoh: Guru Inovasi / Apple Distinguished Educator" required>
+          </div>
+          <div class="form-group">
+            <label for="profSekolah">Sekolah / Organisasi</label>
+            <input type="text" id="profSekolah" class="form-control" placeholder="Contoh: SAM Bestari, Subang Jaya" required>
+          </div>
+          <div class="form-group">
+            <label for="profGambar">Gambar Profil</label>
+            <input type="file" id="profGambar" class="form-control" accept="image/*">
+          </div>
+          <button type="submit" class="btn">Jana & Kemaskini Kad Profil</button>
+        </form>
+      </div>
+
+      <!-- Kad Profil Dijana Secara Dinamik -->
+      <h3>Kad Profil Korporat Pengguna</h3>
+      <div class="profile-card">
+        <img id="cardImg" class="profile-avatar" src="https://via.placeholder.com/120?text=Profil" alt="Gambar Profil">
+        <div id="cardNama" class="profile-name">Nama Pengguna</div>
+        <div id="cardJawatan" class="profile-role">Jawatan Pengguna</div>
+        <div id="cardSekolah" class="profile-school">Sekolah / Institusi</div>
+      </div>
+
+      <div style="margin-top: 2rem;" class="card">
+        <h3>Visi & Misi ALC Selangor</h3>
+        <br>
+        <p><strong>Visi:</strong> Menjadi pemangkin utama pengintegrasian teknologi Apple dalam bidang pendidikan berasaskan abad ke-21 di Selangor.</p>
+        <br>
+        <p><strong>Misi:</strong> Memperkasakan pendidik dan pelajar dengan kemahiran kreatif, pemikiran kritis, serta inovasi digital menerusi ekosistem Apple Learning Center.</p>
+      </div>
+    </section>
+
+    <!-- 5. MEDIA SOSIAL -->
+    <section id="medsos" class="tab-content">
+      <h2 class="section-title">Media Sosial Rasmi</h2>
+      <p class="section-desc">Ikuti perkembangan dan aktiviti kami di saluran media sosial berikut.</p>
+
+      <div class="social-links">
+        <a href="#" class="social-btn">🌐 Portal Rasmi</a>
+        <a href="#" class="social-btn">📘 Facebook ALC</a>
+        <a href="#" class="social-btn">📸 Instagram ALC</a>
+        <a href="#" class="social-btn">🎬 YouTube Channel</a>
+        <a href="#" class="social-btn">💬 Telegram Rasmi</a>
+      </div>
+    </section>
+
+    <!-- 6. BUKU PELAWAT -->
+    <section id="pelawat" class="tab-content">
+      <h2 class="section-title">Buku Pelawat Digital</h2>
+      <p class="section-desc">Sila tinggalkan ucapan atau maklum balas kehadiran anda.</p>
+
+      <div class="form-container">
+        <h3>Daftar Buku Pelawat</h3>
+        <br>
+        <form id="formGuestbook" onsubmit="addGuestbook(event)">
+          <div class="form-group">
+            <label for="guestName">Nama Penuh</label>
+            <input type="text" id="guestName" class="form-control" placeholder="Nama anda" required>
+          </div>
+          <div class="form-group">
+            <label for="guestSchool">Sekolah / Jabatan / Organisasi</label>
+            <input type="text" id="guestSchool" class="form-control" placeholder="Nama sekolah/organisasi" required>
+          </div>
+          <div class="form-group">
+            <label for="guestMessage">Catatan / Mesej</label>
+            <textarea id="guestMessage" class="form-control" placeholder="Tinggalkan mesej atau cadangan anda..." required></textarea>
+          </div>
+          <button type="submit" class="btn">Hantar Catatan</button>
+        </form>
+      </div>
+
+      <h3>Senarai Pelawat</h3>
+      <br>
+      <div id="guestList"></div>
+    </section>
+
+  </main>
+
+  <!-- JAVASCRIPT VANILLA -->
+  <script>
+    // ==========================================
+    // DATA APPLIKASI (STATE)
+    // ==========================================
+    let programs = [
+      {
+        id: 1,
+        title: "Bengkel Creative Learning dengan iPad",
+        time: "12 Ogos 2026, 9:00 AM",
+        img: "https://images.unsplash.com/photo-1542744094-3a31b272c490?auto=format&fit=crop&w=600&q=80"
+      }
+    ];
+
+    let oprs = [
+      {
+        id: 1,
+        title: "OPR: Bengkel Pengaturcaraan Swift",
+        time: "20 Julai 2026",
+        img: "https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?auto=format&fit=crop&w=600&q=80"
+      }
+    ];
+
+    let guests = [
+      {
+        name: "Ahmad Zaki",
+        school: "SK Seksyen 7 Shah Alam",
+        message: "Tahniah! Pusat latihan yang sangat moden dan bermanfaat untuk guru.",
+        date: "04 Ogos 2026"
+      }
+    ];
+
+    // ==========================================
+    // SISTEM TAB & NAVIGASI
+    // ==========================================
+    function switchTab(tabId) {
+      // Sembunyikan semua seksyen
+      const tabs = document.querySelectorAll('.tab-content');
+      tabs.forEach(tab => tab.classList.remove('active'));
+
+      // Nyahaktifkan semua butang navigasi
+      const btns = document.querySelectorAll('.nav-btn');
+      btns.forEach(btn => btn.classList.remove('active'));
+
+      // Tunjukkan tab dipilihs
+      document.getElementById(tabId).classList.add('active');
+
+      // Aktifkan butang berkenaan
+      const activeBtn = Array.from(btns).find(btn => btn.getAttribute('onclick').includes(tabId));
+      if (activeBtn) activeBtn.classList.add('active');
+
+      // Tutup menu mobile jika terbuka
+      document.getElementById('navbar').classList.remove('open');
+    }
+
+    // Mobile Menu Toggle
+    document.getElementById('menuToggle').addEventListener('click', () => {
+      document.getElementById('navbar').classList.toggle('open');
+    });
+
+    // ==========================================
+    // PEMBACA GAMBAR (FILE READER HELPER)
+    // ==========================================
+    function readFileAsDataURL(file) {
+      return new Promise((resolve, reject) => {
+        const reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.onerror = reject;
+        reader.readAsDataURL(file);
+      });
+    }
+
+    // ==========================================
+    // 1. DASHBOARD LOGIK
+    // ==========================================
+    function updateDashboard() {
+      document.getElementById('statProgramCount').innerText = programs.length;
+      document.getElementById('statOprCount').innerText = oprs.length;
+      document.getElementById('statGuestCount').innerText = guests.length;
+
+      const container = document.getElementById('dashboardProgramList');
+      if (programs.length === 0) {
+        container.innerHTML = `<p style="color:var(--text-muted)">Tiada program tersenarai.</p>`;
+        return;
+      }
+
+      container.innerHTML = programs.map(p => `
+        <div class="card">
+          <img src="${p.img}" alt="${p.title}" class="card-img">
+          <h4>${p.title}</h4>
+          <p style="color: var(--text-muted); font-size:0.85rem; margin-top:5px;">🕒 ${p.time}</p>
+        </div>
+      `).join('');
+    }
+
+    // ==========================================
+    // 2. SENARAI PROGRAM LOGIK
+    // ==========================================
+    async function addProgram(e) {
+      e.preventDefault();
+      const title = document.getElementById('progTitle').value;
+      const time = document.getElementById('progTime').value;
+      const imgFile = document.getElementById('progImg').files[0];
+
+      let imgUrl = 'https://via.placeholder.com/300?text=Program';
+      if (imgFile) {
+        imgUrl = await readFileAsDataURL(imgFile);
+      }
+
+      programs.unshift({ id: Date.now(), title, time, img: imgUrl });
+      document.getElementById('formProgram').reset();
+      
+      renderPrograms();
+      updateDashboard();
+      alert('Program berjaya ditambah!');
+    }
+
+    function renderPrograms() {
+      const container = document.getElementById('programList');
+      container.innerHTML = programs.map(p => `
+        <div class="card">
+          <img src="${p.img}" alt="${p.title}" class="card-img">
+          <h3>${p.title}</h3>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-top:0.5rem;">🕒 ${p.time}</p>
+        </div>
+      `).join('');
+    }
+
+    // ==========================================
+    // 3. SENARAI OPR LOGIK
+    // ==========================================
+    async function addOpr(e) {
+      e.preventDefault();
+      const title = document.getElementById('oprTitle').value;
+      const time = document.getElementById('oprTime').value;
+      const imgFile = document.getElementById('oprImg').files[0];
+
+      let imgUrl = 'https://via.placeholder.com/300?text=OPR';
+      if (imgFile) {
+        imgUrl = await readFileAsDataURL(imgFile);
+      }
+
+      oprs.unshift({ id: Date.now(), title, time, img: imgUrl });
+      document.getElementById('formOpr').reset();
+      
+      renderOpr();
+      updateDashboard();
+      alert('Laporan OPR berjaya dimuat naik!');
+    }
+
+    function renderOpr() {
+      const container = document.getElementById('oprList');
+      container.innerHTML = oprs.map(o => `
+        <div class="card">
+          <img src="${o.img}" alt="${o.title}" class="card-img">
+          <h3>${o.title}</h3>
+          <p style="color: var(--text-muted); font-size: 0.9rem; margin-top:0.5rem;">📅 ${o.time}</p>
+        </div>
+      `).join('');
+    }
+
+    // ==========================================
+    // 4. PROFIL PENGGUNA (MAKLUMAT KORPORAT)
+    // ==========================================
+    async function updateProfile(e) {
+      e.preventDefault();
+      const nama = document.getElementById('profNama').value;
+      const jawatan = document.getElementById('profJawatan').value;
+      const sekolah = document.getElementById('profSekolah').value;
+      const imgFile = document.getElementById('profGambar').files[0];
+
+      document.getElementById('cardNama').innerText = nama;
+      document.getElementById('cardJawatan').innerText = jawatan;
+      document.getElementById('cardSekolah').innerText = sekolah;
+
+      if (imgFile) {
+        const imgUrl = await readFileAsDataURL(imgFile);
+        document.getElementById('cardImg').src = imgUrl;
+      }
+
+      alert('Profil pengguna berjaya dijana dalam bahagian Korporat!');
+    }
+
+    // ==========================================
+    // 5. BUKU PELAWAT LOGIK
+    // ==========================================
+    function addGuestbook(e) {
+      e.preventDefault();
+      const name = document.getElementById('guestName').value;
+      const school = document.getElementById('guestSchool').value;
+      const message = document.getElementById('guestMessage').value;
+      const date = new Date().toLocaleDateString('ms-MY', { day: 'numeric', month: 'long', year: 'numeric' });
+
+      guests.unshift({ name, school, message, date });
+      document.getElementById('formGuestbook').reset();
+
+      renderGuestbook();
+      updateDashboard();
+      alert('Terima kasih! Catatan anda telah disimpan.');
+    }
+
+    function renderGuestbook() {
+      const container = document.getElementById('guestList');
+      container.innerHTML = guests.map(g => `
+        <div class="guestbook-item">
+          <strong>${g.name}</strong> <span style="color:var(--text-muted);">(${g.school})</span>
+          <p style="margin-top:0.5rem;">"${g.message}"</p>
+          <div class="guestbook-meta">Tarikh: ${g.date}</div>
+        </div>
+      `).join('');
+    }
+
+    // ==========================================
+    // INITIALIZATION (PELAKSANAAN AWAL)
+    // ==========================================
+    window.onload = function() {
+      renderPrograms();
+      renderOpr();
+      renderGuestbook();
+      updateDashboard();
+    };
+  </script>
+</body>
+</html>
