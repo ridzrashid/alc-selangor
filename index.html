@@ -29,6 +29,13 @@
       font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
     }
 
+    <!-- MODAL PAPARAN GAMBAR PENUH -->
+  <div id="imageModal" class="modal" onclick="closeModal()">
+    <span class="close-btn" onclick="closeModal()">&times;</span>
+    <img class="modal-content" id="fullImg" alt="Paparan Penuh">
+  </div>
+
+</body>
     body {
       background-color: var(--bg-color);
       color: var(--text-main);
@@ -866,11 +873,39 @@
     // ==========================================
     window.onload = function() {
       loadProfile();
-      renderPrograms();
-      renderOpr();
+      renderPrograms(); container.innerHTML = programs.map(p => `
+  <div class="card">
+    <img src="${p.img}" alt="${p.title}" class="card-img" onclick="openModal(this.src)" title="Klik untuk besarkan">
+    <h3>${p.title}</h3>
+    <p style="color: var(--text-muted); font-size: 0.9rem; margin-top:0.5rem;">🕒 ${p.time}</p>
+  </div>
+`).join('');
+      renderOpr(); container.innerHTML = oprs.map(o => `
+  <div class="card">
+    <img src="${o.img}" alt="${o.title}" class="card-img" onclick="openModal(this.src)" title="Klik untuk besarkan">
+    <h3>${o.title}</h3>
+    <p style="color: var(--text-muted); font-size: 0.9rem; margin-top:0.5rem;">📅 ${o.time}</p>
+  </div>
+`).join('');
       renderGuestbook();
-      updateDashboard();
+      updateDashboard(); container.innerHTML = programs.map(p => `
+  <div class="card">
+    <img src="${p.img}" alt="${p.title}" class="card-img" onclick="openModal(this.src)" title="Klik untuk besarkan">
+    <h4>${p.title}</h4>
+    <p style="color: var(--text-muted); font-size:0.85rem; margin-top:5px;">🕒 ${p.time}</p>
+  </div>
+`).join('');
     };
+    function openModal(src) {
+  const modal = document.getElementById('imageModal');
+  const fullImg = document.getElementById('fullImg');
+  fullImg.src = src;
+  modal.style.display = 'flex';
+}
+
+function closeModal() {
+  document.getElementById('imageModal').style.display = 'none';
+}
   </script>
 </body>
 </html>
